@@ -1,0 +1,42 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Force HTTPS (OVH mutualisé est derrière un reverse proxy)
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Redirige la racine vers l'application React (domaine principal uniquement).
+    # Les sous-domaines profils (ex. heloise.fayefiore.com) ne sont pas redirigés :
+    # leur racine est gérée par la route Symfony {slug}.fayefiore.com.
+    RewriteCond %{HTTP_HOST} ^(www\.)?fayefiore\.com$ [NC]
+    RewriteRule ^$ /app/ [L,R=301]
+
+    # API routes → Symfony front controller
+    RewriteCond %{REQUEST_URI} ^/api/
+    RewriteRule ^(.*)$ index.php [QSA,L]
+
+    # Static assets in /app/ (React build)
+    RewriteCond %{REQUEST_URI} ^/app/
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f
+    RewriteRule ^ - [L]
+
+    # SPA fallback for /app/* routes
+    RewriteCond %{REQUEST_URI} ^/app/
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+    RewriteRule ^ /app/index.html [L]
+
+    # Symfony catch-all for everything else
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options SAMEORIGIN
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Disable directory listing
+Options -Indexes

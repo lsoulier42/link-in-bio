@@ -1,0 +1,38 @@
+services:
+  php:
+    build:
+      context: ./docker/php
+    container_name: link_in_bio_php
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - APP_ENV=dev
+      - DATABASE_URL=mysql://link_in_bio:link_in_bio@db:3306/link_in_bio?serverVersion=8.4&charset=utf8mb4
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.4
+    container_name: link_in_bio_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: link_in_bio
+      MYSQL_USER: link_in_bio
+      MYSQL_PASSWORD: link_in_bio
+      MYSQL_ROOT_PASSWORD: link_in_bio
+    volumes:
+      - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  mysqldata:

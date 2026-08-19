@@ -1,0 +1,12 @@
+# Défense en profondeur : ce dossier ne doit JAMAIS exécuter de PHP
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+RemoveHandler .php .php3 .php4 .php5 .phtml .pht
+RemoveType .php .php3 .php4 .php5 .phtml .pht

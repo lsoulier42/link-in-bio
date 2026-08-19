@@ -1,0 +1,26 @@
+# Environnements
+.env.local
+.env.*.local
+
+# Symfony
+/backend/var/
+/backend/vendor/
+/backend/public/bundles/
+
+# Node
+/frontend/node_modules/
+/frontend/dist/
+
+# Système
+.DS_Store
+
+# --- Ajout pour publication publique ---
+.env
+.env.*
+!.env.example
+*.sql
+import_*.json
+.ovhconfig
+/var/
+/backend/var/
+/backend/public/app/

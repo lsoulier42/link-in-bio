@@ -2,6 +2,33 @@
 
 A self-hosted link-in-bio web application. Each user gets a personalized public page with their links, categories, and visual theme — similar to Linktree, but fully open source and yours to deploy.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white)](backend/composer.json)
+[![Symfony](https://img.shields.io/badge/Symfony-8-000000?logo=symfony&logoColor=white)](backend/composer.json)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](frontend/package.json)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](frontend/package.json)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38BDF8?logo=tailwindcss&logoColor=white)](frontend/package.json)
+[![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?logo=mysql&logoColor=white)](compose.yaml)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](compose.yaml)
+
+## Table of contents
+
+- [Screenshots](#screenshots)
+- [Features](#features)
+- [Tech stack](#tech-stack)
+- [Getting started](#getting-started)
+  - [Docker](#getting-started-docker)
+  - [Without Docker](#getting-started-without-docker)
+- [Demo accounts](#demo-accounts-fixtures)
+- [API routes](#api-routes)
+  - [Public](#public)
+  - [Admin (auth required)](#admin-auth-required)
+- [Themes](#themes)
+- [Customization](#customization)
+- [Contributing](#contributing)
+- [Technical notes](#technical-notes)
+- [License](#license)
+
 ## Screenshots
 
 | Admin dashboard | Link management |
@@ -49,7 +76,9 @@ link-in-bio/
 
 > The built frontend (`backend/public/app/`) is gitignored — run `npm run build` in `frontend/` to generate it.
 
-## Getting started (Docker)
+## Getting started
+
+### Getting started (Docker)
 
 Prerequisites: Docker + Docker Compose.
 
@@ -67,14 +96,14 @@ cd frontend && npm run build
 
 The API responds on http://localhost:8000/api and the built frontend on http://localhost:8000/app/.
 
-### Demo accounts (fixtures)
+#### Demo accounts (fixtures)
 
 | Email                | Password     | Profile      | Theme  |
 |----------------------|--------------|--------------|--------|
 | `demo@example.com`   | `password123`| `/app/alice` | rose   |
 | `demo2@example.com`  | `password123`| `/app/bob`   | ocean  |
 
-## Getting started (without Docker)
+### Getting started (without Docker)
 
 PHP 8.5+ with `pdo_mysql`, MySQL 8.4, and Node.js 18+.
 
@@ -144,6 +173,14 @@ cd frontend && npm install && npm run dev
 - **Privacy page** — replace the placeholder contact email in `frontend/src/pages/Privacy.jsx`.
 - **Social platforms** — add or edit platforms in `backend/src/Service/SocialNetworkService.php` and `frontend/src/icons/index.js` (keep the icon names in sync).
 - **Demo data** — the fixtures live in `backend/src/DataFixtures/AppFixtures.php`.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+- Frontend lint: `cd frontend && npm run lint`
+- Frontend build: `cd frontend && npm run build`
+- Backend: install via Composer, run migrations, and make sure `php -l` passes on changed files.
 
 ## Technical notes
 

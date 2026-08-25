@@ -57,11 +57,11 @@ class AdminProfileController extends AbstractController
         if (isset($data['slug'])) {
             $slug = strtolower(trim((string) $data['slug']));
             if ($slug === '' || !preg_match('/^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/', $slug)) {
-                return $this->json(['error' => 'Slug invalide : lettres minuscules, chiffres et tirets uniquement.'], 422);
+                return $this->json(['error' => 'Invalid slug: lowercase letters, digits and hyphens only.'], 422);
             }
             $existing = $profileRepository->findOneBy(['slug' => $slug]);
             if ($existing && $existing->getId() !== $profile->getId()) {
-                return $this->json(['error' => 'Ce slug est déjà utilisé par un autre profil.'], 409);
+                return $this->json(['error' => 'This slug is already used by another profile.'], 409);
             }
             $profile->setSlug($slug);
         }
@@ -81,7 +81,7 @@ class AdminProfileController extends AbstractController
             }
             $color = $data[$field] !== null ? trim((string) $data[$field]) : null;
             if ($color !== null && $color !== '' && !preg_match('/^#[0-9a-fA-F]{6}$/', $color)) {
-                return $this->json(['error' => ucfirst($field) . ' invalide : format attendu #RRGGBB.'], 422);
+                return $this->json(['error' => ucfirst($field) . ' invalid: expected format #RRGGBB.'], 422);
             }
             $profile->{$setter}($color !== '' ? $color : null);
         }
@@ -93,7 +93,7 @@ class AdminProfileController extends AbstractController
             }
             $font = $data[$field] !== null ? trim((string) $data[$field]) : null;
             if ($font !== null && $font !== '' && !in_array($font, $allowedFonts, true)) {
-                return $this->json(['error' => ucfirst($field) . ' invalide : police non reconnue.'], 422);
+                return $this->json(['error' => ucfirst($field) . ' invalid: unknown font.'], 422);
             }
             $profile->{$setter}($font !== '' ? $font : null);
         }

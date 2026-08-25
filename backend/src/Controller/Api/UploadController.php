@@ -43,33 +43,33 @@ class UploadController extends AbstractController
         $type = $request->query->get('type', 'avatars');
 
         if (!isset(self::TYPES[$type])) {
-            return $this->json(['error' => 'Type d\'upload inconnu'], 422);
+            return $this->json(['error' => 'Unknown upload type'], 422);
         }
 
         /** @var UploadedFile|null $file */
         $file = $request->files->get('file');
 
         if (!$file) {
-            return $this->json(['error' => 'Aucun fichier fourni'], 422);
+            return $this->json(['error' => 'No file provided'], 422);
         }
 
         if (!$file->isValid()) {
-            return $this->json(['error' => 'Fichier invalide'], 422);
+            return $this->json(['error' => 'Invalid file'], 422);
         }
 
         if ($file->getSize() > self::MAX_SIZE) {
-            return $this->json(['error' => 'Fichier trop volumineux (5 Mo max)'], 422);
+            return $this->json(['error' => 'File too large (5 MB max)'], 422);
         }
 
         $mimeType = $this->detectMimeType($file);
         if ($mimeType === null || !isset(self::ALLOWED_MIME_TYPES[$mimeType])) {
-            return $this->json(['error' => 'Type d\'image non autorisé'], 422);
+            return $this->json(['error' => 'Image type not allowed'], 422);
         }
 
         $extension = self::ALLOWED_MIME_TYPES[$mimeType];
 
         if (!$this->isWithinMaxDimension($file)) {
-            return $this->json(['error' => 'Image trop grande (4096 px max par côté)'], 422);
+            return $this->json(['error' => 'Image too large (4096 px max per side)'], 422);
         }
 
         $config = self::TYPES[$type];
@@ -104,9 +104,9 @@ class UploadController extends AbstractController
     }
 
     /**
-     * Redimensionne l'image en place pour qu'aucun côté ne dépasse $maxDimension.
-     * Ne fait rien si GD est indisponible, si le format n'est pas supporté, ou si
-     * l'image est déjà plus petite.
+     * Resizes the image in place so no side exceeds $maxDimension.
+     * Does nothing if GD is unavailable, the format is unsupported, or the
+     * image is already smaller.
      */
     private function resizeToMax(string $path, string $mimeType, int $maxDimension): void
     {

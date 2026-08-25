@@ -40,7 +40,7 @@ export default function AdminLayout() {
                 <Sparkles className="w-4 h-4 text-white" aria-hidden="true" />
               </span>
               <span className="text-lg">
-                FayeFiore <span className="text-slate-400 font-medium">Admin</span>
+                Link in Bio <span className="text-slate-400 font-medium">Admin</span>
               </span>
             </Link>
 
@@ -56,7 +56,7 @@ export default function AdminLayout() {
                 }
               >
                 <Users className="w-4 h-4" aria-hidden="true" />
-                Utilisateurs
+                Users
               </NavLink>
             )}
           </div>
@@ -66,7 +66,7 @@ export default function AdminLayout() {
             className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
           >
             <LogOut className="w-4 h-4" aria-hidden="true" />
-            Déconnexion
+            Log out
           </button>
         </div>
       </nav>

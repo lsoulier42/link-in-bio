@@ -39,7 +39,7 @@ class AdminUserController extends AbstractController
     {
         $user = $userRepository->find($id);
         if (!$user) {
-            return $this->json(['error' => 'Utilisateur introuvable'], 404);
+            return $this->json(['error' => 'User not found'], 404);
         }
 
         return $this->json($this->serialize($user));
@@ -55,13 +55,13 @@ class AdminUserController extends AbstractController
         $roles = $this->normalizeRoles($data['roles'] ?? []);
 
         if ($email === '') {
-            return $this->json(['error' => 'L\'email est requis'], 422);
+            return $this->json(['error' => 'Email is required'], 422);
         }
         if ($password === '') {
-            return $this->json(['error' => 'Le mot de passe est requis'], 422);
+            return $this->json(['error' => 'Password is required'], 422);
         }
         if ($this->em->getRepository(User::class)->findOneBy(['email' => $email])) {
-            return $this->json(['error' => 'Un utilisateur avec cet email existe déjà'], 409);
+            return $this->json(['error' => 'A user with this email already exists'], 409);
         }
 
         $user = new User();
@@ -73,10 +73,10 @@ class AdminUserController extends AbstractController
         if (is_array($profileData) && !empty($profileData['slug'])) {
             $slug = strtolower(trim((string) $profileData['slug']));
             if (!preg_match('/^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/', $slug)) {
-                return $this->json(['error' => 'Slug invalide : lettres minuscules, chiffres et tirets uniquement.'], 422);
+                return $this->json(['error' => 'Invalid slug: lowercase letters, digits and hyphens only.'], 422);
             }
             if ($this->em->getRepository(Profile::class)->findOneBy(['slug' => $slug])) {
-                return $this->json(['error' => 'Un profil avec ce slug existe déjà'], 409);
+                return $this->json(['error' => 'A profile with this slug already exists'], 409);
             }
             $profile = new Profile();
             $profile->setSlug($slug);
@@ -104,7 +104,7 @@ class AdminUserController extends AbstractController
         $current = $this->getUser();
         $user = $userRepository->find($id);
         if (!$user) {
-            return $this->json(['error' => 'Utilisateur introuvable'], 404);
+            return $this->json(['error' => 'User not found'], 404);
         }
 
         $data = json_decode($request->getContent(), true) ?? [];
@@ -112,11 +112,11 @@ class AdminUserController extends AbstractController
         if (isset($data['email'])) {
             $email = trim((string) $data['email']);
             if ($email === '') {
-                return $this->json(['error' => 'L\'email est requis'], 422);
+                return $this->json(['error' => 'Email is required'], 422);
             }
             $existing = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
             if ($existing && $existing->getId() !== $user->getId()) {
-                return $this->json(['error' => 'Un utilisateur avec cet email existe déjà'], 409);
+                return $this->json(['error' => 'A user with this email already exists'], 409);
             }
             $user->setEmail($email);
         }
@@ -131,10 +131,10 @@ class AdminUserController extends AbstractController
             $isAdmin = in_array('ROLE_ADMIN', $newRoles, true);
 
             if (!$isAdmin && $user->getId() === $current->getId()) {
-                return $this->json(['error' => 'Vous ne pouvez pas retirer votre propre rôle administrateur'], 403);
+                return $this->json(['error' => 'You cannot remove your own admin role'], 403);
             }
             if (!$isAdmin && $wasAdmin && $this->isLastAdmin()) {
-                return $this->json(['error' => 'Impossible de retirer le rôle administrateur du dernier admin'], 403);
+                return $this->json(['error' => 'Cannot remove the admin role from the last admin'], 403);
             }
             $user->setRoles($newRoles);
         }
@@ -156,13 +156,13 @@ class AdminUserController extends AbstractController
         $current = $this->getUser();
         $user = $userRepository->find($id);
         if (!$user) {
-            return $this->json(['error' => 'Utilisateur introuvable'], 404);
+            return $this->json(['error' => 'User not found'], 404);
         }
         if ($user->getId() === $current->getId()) {
-            return $this->json(['error' => 'Vous ne pouvez pas supprimer votre propre compte'], 403);
+            return $this->json(['error' => 'You cannot delete your own account'], 403);
         }
         if (in_array('ROLE_ADMIN', $user->getRoles(), true) && $this->isLastAdmin()) {
-            return $this->json(['error' => 'Impossible de supprimer le dernier administrateur'], 403);
+            return $this->json(['error' => 'Cannot delete the last administrator'], 403);
         }
 
         $this->em->remove($user);

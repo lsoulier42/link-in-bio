@@ -8,12 +8,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Affiche la page publique d'un profil sur son sous-domaine.
+ * Renders the public page of a profile on its subdomain.
  *
- * Ex. : heloise.example.com -> profil dont le slug est "heloise".
- * La correspondance sous-domaine -> slug est 100 % dynamique : tout nouveau
- * sous-domaine <slug>.example.com mappe automatiquement le profil
- * correspondant, sans aucune configuration supplémentaire.
+ * E.g. alice.example.com -> profile whose slug is "alice".
+ * The subdomain -> slug mapping is fully dynamic: any new subdomain
+ * <slug>.example.com automatically maps to the matching profile,
+ * without any extra configuration.
  */
 class ProfileSubdomainController extends AbstractController
 {
@@ -21,13 +21,13 @@ class ProfileSubdomainController extends AbstractController
     public function index(string $slug, ProfileRepository $profiles): Response
     {
         if (!$profiles->findOneBy(['slug' => $slug])) {
-            throw $this->createNotFoundException('Profil introuvable');
+            throw $this->createNotFoundException('Profile not found');
         }
 
         $index = $this->getParameter('kernel.project_dir').'/public/app/index.html';
 
         return new Response(
-            file_get_contents($index) ?: throw $this->createNotFoundException('Frontend manquant'),
+            file_get_contents($index) ?: throw $this->createNotFoundException('Frontend build missing'),
             Response::HTTP_OK,
             ['Content-Type' => 'text/html; charset=UTF-8']
         );

@@ -1,12 +1,12 @@
 /**
- * Polices de texte personnalisables (nom, bio, titres de catégories).
- * Des piles système uniquement : aucune ressource externe à charger.
- * La clé est stockée en base ; "auto" (null) = police du thème.
+ * Customizable text fonts (name, bio, category titles).
+ * System font stacks only: no external resources to load.
+ * The key is stored in the database; "auto" (null) = the theme font.
  */
 export const FONTS = [
   {
     name: 'sans',
-    label: 'Sans-serif (défaut)',
+    label: 'Sans-serif (default)',
     stack: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
   },
   {
@@ -21,12 +21,12 @@ export const FONTS = [
   },
   {
     name: 'cursive',
-    label: 'Écriture manuscrite',
+    label: 'Handwritten',
     stack: "'Segoe Script', 'Comic Sans MS', cursive",
   },
   {
     name: 'display',
-    label: 'Impact (décoratif)',
+    label: 'Impact (decorative)',
     stack: "Impact, 'Arial Black', Haettenschweiler, sans-serif",
   },
 ];

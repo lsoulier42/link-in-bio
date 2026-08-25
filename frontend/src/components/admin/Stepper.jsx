@@ -3,7 +3,7 @@ import Button from './Button';
 
 export function StepperIndicator({ steps, current, onStepClick }) {
   return (
-    <ol className="flex items-stretch gap-1.5 mb-6" aria-label="Étapes">
+    <ol className="flex items-stretch gap-1.5 mb-6" aria-label="Steps">
       {steps.map((step, index) => {
         const isDone = index < current;
         const isActive = index === current;
@@ -14,7 +14,7 @@ export function StepperIndicator({ steps, current, onStepClick }) {
               onClick={() => isDone && onStepClick?.(index)}
               disabled={!isDone}
               aria-current={isActive ? 'step' : undefined}
-              title={isDone ? `Revenir à l’étape ${step.label}` : undefined}
+              title={isDone ? `Back to the ${step.label} step` : undefined}
               className={`w-full flex flex-col items-center gap-1 rounded-xl px-1.5 py-2 border transition-all duration-150 ${
                 isActive
                   ? 'border-violet-400/50 bg-violet-500/10'
@@ -64,13 +64,13 @@ export function StepperFooter({
   return (
     <div className="flex items-center gap-2">
       <Button variant="ghost" onClick={onCancel} disabled={saving || cancelDisabled}>
-        Annuler
+        Cancel
       </Button>
       <div className="flex-1" />
       {current > 0 && (
         <Button variant="secondary" onClick={onBack} disabled={saving}>
           <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-          Précédent
+          Back
         </Button>
       )}
       {isLast ? (
@@ -80,7 +80,7 @@ export function StepperFooter({
         </Button>
       ) : (
         <Button onClick={onNext} disabled={!canGoNext}>
-          Suivant
+          Next
           <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </Button>
       )}

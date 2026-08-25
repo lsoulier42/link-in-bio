@@ -88,9 +88,9 @@ export default function ProfileEditor() {
         categoryFont: profile.categoryFont,
       });
       setProfile(updated);
-      toast('Profil sauvegardé');
+      toast('Profile saved');
     } catch (err) {
-      toast(err.message || 'Erreur lors de la sauvegarde', 'error');
+      toast(err.message || 'Error while saving', 'error');
     } finally {
       setSaving(false);
     }
@@ -118,28 +118,28 @@ export default function ProfileEditor() {
         className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors mb-5"
       >
         <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-        Retour au dashboard
+        Back to dashboard
       </RouterLink>
 
       <div className="glass rounded-[var(--radius-lg)] p-6 sm:p-8 anim-pop-in">
         <h1 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
           <User className="w-5 h-5 text-violet-300" aria-hidden="true" />
-          Éditer le profil — {profile.slug}
+          Edit profile — {profile.slug}
         </h1>
 
         <div className="space-y-5">
           <TextInput
             id="profile-slug"
-            label="Slug (sous-domaine)"
+            label="Slug (subdomain)"
             value={profile.slug || ''}
             onChange={(e) => setProfile({ ...profile, slug: e.target.value })}
-            helper="Adresse publique : votre-slug.fayefiore.com"
+            helper="Public address: your-slug.example.com"
             required
           />
 
           <TextInput
             id="profile-display-name"
-            label="Nom d'affichage"
+            label="Display name"
             value={profile.displayName || ''}
             onChange={(e) => setProfile({ ...profile, displayName: e.target.value })}
             required
@@ -166,9 +166,9 @@ export default function ProfileEditor() {
             <div className="flex items-center justify-between">
               <p className="inline-flex items-center gap-2 text-sm font-medium text-slate-200">
                 <Image className="w-4 h-4 text-violet-300" aria-hidden="true" />
-                Image de fond
+                Background image
               </p>
-              <span className="text-[11px] text-slate-500">facultatif</span>
+              <span className="text-[11px] text-slate-500">optional</span>
             </div>
 
             <ImageUpload
@@ -182,7 +182,7 @@ export default function ProfileEditor() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label htmlFor="background-overlay" className="block text-sm font-medium text-slate-200">
-                  Opacité du voile
+                  Overlay opacity
                 </label>
                 <span className="text-xs text-slate-400 tabular-nums">{profile.backgroundOverlay}%</span>
               </div>
@@ -197,16 +197,16 @@ export default function ProfileEditor() {
                 className="w-full accent-violet-500"
               />
               <p className="mt-1.5 text-xs text-slate-500">
-                Plus l'opacité est élevée, plus le thème recouvre l'image pour garantir la lisibilité.
+                The higher the opacity, the more the theme covers the image to keep it readable.
               </p>
             </div>
 
             <Segmented
-              label="Affichage de l'image"
+              label="Image display"
               value={profile.backgroundSize}
               options={[
-                { value: 'cover', label: 'Couvrir' },
-                { value: 'contain', label: 'Ajuster' },
+                { value: 'cover', label: 'Cover' },
+                { value: 'contain', label: 'Fit' },
               ]}
               onChange={(backgroundSize) => setProfile({ ...profile, backgroundSize })}
             />
@@ -216,9 +216,9 @@ export default function ProfileEditor() {
               value={profile.backgroundPosition}
               className="grid-cols-3"
               options={[
-                { value: 'top', label: 'Haut' },
-                { value: 'center', label: 'Centre' },
-                { value: 'bottom', label: 'Bas' },
+                { value: 'top', label: 'Top' },
+                { value: 'center', label: 'Center' },
+                { value: 'bottom', label: 'Bottom' },
               ]}
               onChange={(backgroundPosition) => setProfile({ ...profile, backgroundPosition })}
             />
@@ -233,14 +233,14 @@ export default function ProfileEditor() {
             <div className="flex items-center justify-between">
               <p className="inline-flex items-center gap-2 text-sm font-medium text-slate-200">
                 <Type className="w-4 h-4 text-violet-300" aria-hidden="true" />
-                Couleurs du texte
+                Text colors
               </p>
-              <span className="text-[11px] text-slate-500">facultatif</span>
+              <span className="text-[11px] text-slate-500">optional</span>
             </div>
 
             <ColorField
               id="profile-name-color"
-              label="Nom d'affichage"
+              label="Display name"
               value={profile.nameColor}
               onChange={(nameColor) => setProfile({ ...profile, nameColor })}
             />
@@ -254,10 +254,10 @@ export default function ProfileEditor() {
 
             <ColorField
               id="profile-category-color"
-              label="Titres des catégories"
+              label="Category titles"
               value={profile.categoryColor}
               onChange={(categoryColor) => setProfile({ ...profile, categoryColor })}
-              helper="Laissez « Auto » pour utiliser les couleurs du thème."
+              helper="Leave « Auto » to use the theme colors."
             />
           </div>
 
@@ -265,14 +265,14 @@ export default function ProfileEditor() {
             <div className="flex items-center justify-between">
               <p className="inline-flex items-center gap-2 text-sm font-medium text-slate-200">
                 <Type className="w-4 h-4 text-violet-300" aria-hidden="true" />
-                Polices du texte
+                Text fonts
               </p>
-              <span className="text-[11px] text-slate-500">facultatif</span>
+              <span className="text-[11px] text-slate-500">optional</span>
             </div>
 
             <FontField
               id="profile-name-font"
-              label="Nom d'affichage"
+              label="Display name"
               value={profile.nameFont}
               onChange={(nameFont) => setProfile({ ...profile, nameFont })}
             />
@@ -286,17 +286,17 @@ export default function ProfileEditor() {
 
             <FontField
               id="profile-category-font"
-              label="Titres des catégories"
+              label="Category titles"
               value={profile.categoryFont}
               onChange={(categoryFont) => setProfile({ ...profile, categoryFont })}
-              helper="Laissez « Auto » pour utiliser la police par défaut du thème."
+              helper="Leave « Auto » to use the theme's default font."
             />
           </div>
 
           <div className="pt-2">
             <Button onClick={handleSave} loading={saving} disabled={saving}>
               {!saving && <Save className="w-4 h-4" aria-hidden="true" />}
-              Sauvegarder
+              Save
             </Button>
           </div>
         </div>

@@ -22,7 +22,7 @@ const emptyForm = {
 
 function formatDate(iso) {
   if (!iso) return '—';
-  return new Date(iso).toLocaleDateString('fr-FR', {
+  return new Date(iso).toLocaleDateString('en-US', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -91,11 +91,11 @@ export default function UsersManager() {
   const handleSave = async () => {
     setFormError(null);
     if (!form.email.trim()) {
-      setFormError('L\'email est requis.');
+      setFormError('Email is required.');
       return;
     }
     if (!editing && !form.password) {
-      setFormError('Le mot de passe est requis.');
+      setFormError('Password is required.');
       return;
     }
 
@@ -106,7 +106,7 @@ export default function UsersManager() {
         const payload = { email: form.email.trim(), roles };
         if (form.password) payload.password = form.password;
         await api.updateUser(editing.id, payload);
-        toast('Utilisateur mis à jour');
+        toast('User updated');
       } else {
         const payload = { email: form.email.trim(), password: form.password, roles };
         if (form.profileSlug.trim()) {
@@ -116,7 +116,7 @@ export default function UsersManager() {
           };
         }
         await api.createUser(payload);
-        toast('Utilisateur créé');
+        toast('User created');
       }
       setDrawerOpen(false);
       fetchUsers();
@@ -134,7 +134,7 @@ export default function UsersManager() {
       await api.updateUser(user.id, {
         roles: isAdmin ? [] : ['ROLE_ADMIN'],
       });
-      toast(isAdmin ? 'Rôle administrateur retiré' : 'Utilisateur promu administrateur');
+      toast(isAdmin ? 'Admin role removed' : 'User promoted to admin');
       fetchUsers();
     } catch (err) {
       toast(err.message, 'error');
@@ -147,7 +147,7 @@ export default function UsersManager() {
     setDeleting(true);
     try {
       await api.deleteUser(deleteTarget.id);
-      toast('Utilisateur supprimé');
+      toast('User deleted');
       setDeleteTarget(null);
       fetchUsers();
     } catch (err) {
@@ -178,26 +178,26 @@ export default function UsersManager() {
     <div className="relative z-10">
       <div className="mb-6 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Utilisateurs</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-white">Users</h1>
           <p className="mt-1 text-sm text-slate-400">
-            Gérez les comptes et les rôles administrateurs.
+            Manage accounts and administrator roles.
           </p>
         </div>
         <Button onClick={openCreate}>
           <Plus className="w-4 h-4" aria-hidden="true" />
-          Nouvel utilisateur
+          New user
         </Button>
       </div>
 
       {users.length === 0 ? (
         <EmptyState
           icon={<Users className="w-7 h-7" aria-hidden="true" />}
-          title="Aucun utilisateur"
-          description="Créez votre premier utilisateur."
+          title="No users yet"
+          description="Create your first user."
           action={
             <Button onClick={openCreate}>
               <Plus className="w-4 h-4" aria-hidden="true" />
-              Créer un utilisateur
+              Create a user
             </Button>
           }
         />
@@ -207,10 +207,10 @@ export default function UsersManager() {
             <table className="w-full text-sm text-left">
               <thead>
                 <tr className="border-b border-white/10 text-xs uppercase tracking-wider text-slate-400">
-                  <th className="px-5 py-3 font-medium">Utilisateur</th>
-                  <th className="px-5 py-3 font-medium">Rôle</th>
-                  <th className="hidden sm:table-cell px-5 py-3 font-medium">Créé le</th>
-                  <th className="hidden md:table-cell px-5 py-3 font-medium">Profils</th>
+                  <th className="px-5 py-3 font-medium">User</th>
+                  <th className="px-5 py-3 font-medium">Role</th>
+                  <th className="hidden sm:table-cell px-5 py-3 font-medium">Created</th>
+                  <th className="hidden md:table-cell px-5 py-3 font-medium">Profiles</th>
                   <th className="px-5 py-3 font-medium text-right">Actions</th>
                 </tr>
               </thead>
@@ -223,14 +223,14 @@ export default function UsersManager() {
                       <td className="px-5 py-3.5">
                         <p className="text-slate-100 font-medium">{user.email}</p>
                         {isSelf && (
-                          <p className="text-xs text-violet-300 mt-0.5">Votre compte</p>
+                          <p className="text-xs text-violet-300 mt-0.5">Your account</p>
                         )}
                       </td>
                       <td className="px-5 py-3.5">
                         {isAdmin ? (
                           <Badge tone="success">Admin</Badge>
                         ) : (
-                          <Badge tone="neutral">Utilisateur</Badge>
+                          <Badge tone="neutral">User</Badge>
                         )}
                       </td>
                       <td className="hidden sm:table-cell px-5 py-3.5 text-slate-400">
@@ -262,8 +262,8 @@ export default function UsersManager() {
                                 type="button"
                                 onClick={() => toggleAdmin(user)}
                                 disabled={isSelf}
-                                title={isAdmin ? 'Retirer le rôle admin' : 'Rendre administrateur'}
-                                aria-label={isAdmin ? `Retirer le rôle admin de ${user.email}` : `Rendre ${user.email} administrateur`}
+                                title={isAdmin ? 'Remove admin role' : 'Make admin'}
+                                aria-label={isAdmin ? `Remove admin role from ${user.email}` : `Make ${user.email} an admin`}
                                 className={`p-2 rounded-lg transition-colors disabled:opacity-40 disabled:pointer-events-none ${
                                   isAdmin
                                     ? 'text-amber-300 hover:bg-amber-500/15'
@@ -279,8 +279,8 @@ export default function UsersManager() {
                               <button
                                 type="button"
                                 onClick={() => openEdit(user)}
-                                title="Modifier"
-                                aria-label={`Modifier ${user.email}`}
+                                title="Edit"
+                                aria-label={`Edit ${user.email}`}
                                 className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
                               >
                                 <Pencil className="w-4 h-4" aria-hidden="true" />
@@ -289,8 +289,8 @@ export default function UsersManager() {
                                 type="button"
                                 onClick={() => setDeleteTarget(user)}
                                 disabled={isSelf}
-                                title={isSelf ? 'Impossible de supprimer votre compte' : 'Supprimer'}
-                                aria-label={`Supprimer ${user.email}`}
+                                title={isSelf ? 'You cannot delete your own account' : 'Delete'}
+                                aria-label={`Delete ${user.email}`}
                                 className="p-2 rounded-lg text-red-400 hover:bg-red-500/15 hover:text-red-300 transition-colors disabled:opacity-40 disabled:pointer-events-none"
                               >
                                 <UserX className="w-4 h-4" aria-hidden="true" />
@@ -311,15 +311,15 @@ export default function UsersManager() {
       <Drawer
         open={drawerOpen}
         onClose={closeDrawer}
-        title={editing ? 'Modifier l\'utilisateur' : 'Nouvel utilisateur'}
-        description={editing ? 'Mettez à jour les informations du compte.' : 'Créez un compte pour un nouvel utilisateur.'}
+        title={editing ? 'Edit user' : 'New user'}
+        description={editing ? 'Update the account information.' : 'Create an account for a new user.'}
         footer={
           <div className="flex items-center justify-end gap-2">
             <Button variant="ghost" onClick={closeDrawer} disabled={saving}>
-              Annuler
+              Cancel
             </Button>
             <Button onClick={handleSave} loading={saving} disabled={saving}>
-              {editing ? 'Enregistrer' : 'Créer l\'utilisateur'}
+              {editing ? 'Save' : 'Create user'}
             </Button>
           </div>
         }
@@ -342,15 +342,15 @@ export default function UsersManager() {
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/30 transition-colors"
-              placeholder="email@exemple.com"
+              placeholder="email@example.com"
             />
           </Field>
 
           <Field
-            label={editing ? 'Mot de passe' : 'Mot de passe'}
+            label="Password"
             htmlFor="user-password"
             required={!editing}
-            helper={editing ? 'Laisser vide pour conserver le mot de passe actuel.' : 'Minimum 8 caractères.'}
+            helper={editing ? 'Leave empty to keep the current password.' : 'Minimum 8 characters.'}
           >
             <input
               id="user-password"
@@ -365,15 +365,15 @@ export default function UsersManager() {
 
           <div className="flex items-center justify-between gap-3 glass-subtle rounded-[var(--radius-md)] px-4 py-3">
             <div>
-              <p className="text-sm font-medium text-slate-200">Administrateur</p>
+              <p className="text-sm font-medium text-slate-200">Administrator</p>
               <p className="text-xs text-slate-400 mt-0.5">
-                Accès à la gestion des utilisateurs.
+                Access to user management.
               </p>
             </div>
             <Toggle
               checked={form.isAdmin}
               onChange={(v) => setForm({ ...form, isAdmin: v })}
-              label={form.isAdmin ? 'Rendre utilisateur' : 'Rendre administrateur'}
+              label={form.isAdmin ? 'Make user' : 'Make admin'}
               disabled={editing?.id === currentUserId}
             />
           </div>
@@ -382,27 +382,27 @@ export default function UsersManager() {
             <>
               <div className="pt-2">
                 <p className="text-xs uppercase tracking-wider text-slate-400 font-medium mb-3">
-                  Profil initial <span className="text-slate-500 normal-case">(optionnel)</span>
+                  Initial profile <span className="text-slate-500 normal-case">(optional)</span>
                 </p>
                 <div className="space-y-4">
-                  <Field label="Slug" htmlFor="profile-slug" helper="Ex. « camille » pour camille.fayefiore.com">
+                  <Field label="Slug" htmlFor="profile-slug" helper="E.g. « alice » for alice.example.com">
                     <input
                       id="profile-slug"
                       type="text"
                       value={form.profileSlug}
                       onChange={(e) => setForm({ ...form, profileSlug: e.target.value })}
                       className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/30 transition-colors"
-                      placeholder="camille"
+                      placeholder="alice"
                     />
                   </Field>
-                  <Field label="Nom affiché" htmlFor="profile-display-name">
+                  <Field label="Display name" htmlFor="profile-display-name">
                     <input
                       id="profile-display-name"
                       type="text"
                       value={form.profileDisplayName}
                       onChange={(e) => setForm({ ...form, profileDisplayName: e.target.value })}
                       className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/30 transition-colors"
-                      placeholder="Camille"
+                      placeholder="Alice"
                     />
                   </Field>
                 </div>
@@ -417,13 +417,13 @@ export default function UsersManager() {
         onCancel={() => setDeleteTarget(null)}
         onConfirm={handleDelete}
         busy={deleting}
-        title="Supprimer l'utilisateur ?"
+        title="Delete this user?"
         message={
           deleteTarget
-            ? `Le compte ${deleteTarget.email} et tous ses profils, liens et catégories seront définitivement supprimés.`
+            ? `The account ${deleteTarget.email} and all of its profiles, links and categories will be permanently deleted.`
             : ''
         }
-        confirmLabel="Supprimer"
+        confirmLabel="Delete"
       />
     </div>
   );

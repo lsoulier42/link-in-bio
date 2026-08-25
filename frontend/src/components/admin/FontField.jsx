@@ -4,8 +4,8 @@ import { FONTS, getFontStack } from '../../themes/fonts';
 import { Field } from './Field';
 
 /**
- * Sélecteur de famille de police avec option "Auto"
- * pour revenir à la police par défaut du thème (value = null).
+ * Font family selector with an "Auto" option
+ * to fall back to the theme's default font (value = null).
  */
 export default function FontField({ id, label, value, onChange, helper, disabled = false }) {
   const autoId = useId();
@@ -29,7 +29,7 @@ export default function FontField({ id, label, value, onChange, helper, disabled
           }`}
         >
           <option value="" className="bg-slate-900 text-slate-400">
-            Auto (thème)
+            Auto (theme)
           </option>
           {FONTS.map((font) => (
             <option key={font.name} value={font.name} className="bg-slate-900 text-white" style={{ fontFamily: getFontStack(font.name) }}>

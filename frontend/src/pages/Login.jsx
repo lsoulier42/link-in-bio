@@ -18,7 +18,7 @@ export default function Login() {
       await api.login(email, password);
       navigate('/admin');
     } catch (err) {
-      setError('Email ou mot de passe incorrect');
+      setError('Invalid email or password');
     } finally {
       setLoading(false);
     }
@@ -34,7 +34,7 @@ export default function Login() {
 
       <div className="relative w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white tracking-tight">FayeFiore</h1>
+          <h1 className="text-3xl font-bold text-white tracking-tight">Link in Bio</h1>
           <p className="text-purple-300/70 text-sm mt-1">Administration</p>
         </div>
 
@@ -44,7 +44,7 @@ export default function Login() {
         >
           <h2 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
             <LogIn className="w-5 h-5 text-violet-400" />
-            Connexion
+            Sign in
           </h2>
 
           {error && (
@@ -65,13 +65,13 @@ export default function Login() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50 transition-all"
-                  placeholder="votre@email.com"
+                  placeholder="you@email.com"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-purple-200/70 mb-1.5">Mot de passe</label>
+              <label className="block text-xs font-medium text-purple-200/70 mb-1.5">Password</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-purple-400/50" />
                 <input
@@ -96,7 +96,7 @@ export default function Login() {
             ) : (
               <>
                 <LogIn className="w-4 h-4" />
-                Se connecter
+                Sign in
               </>
             )}
           </button>

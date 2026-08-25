@@ -42,7 +42,7 @@ class AdminCategoryController extends AbstractController
     {
         $name = trim((string) $name);
         if ($name === '' || mb_strlen($name) > 128) {
-            return 'Le nom de la catégorie est requis (max 128 caractères)';
+            return 'Category name is required (max 128 characters)';
         }
 
         return null;

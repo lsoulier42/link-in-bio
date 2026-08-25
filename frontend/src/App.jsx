@@ -11,16 +11,20 @@ import UsersManager from './pages/admin/UsersManager';
 
 const RESERVED_SUBDOMAINS = ['www', 'app', 'api'];
 
+// Production domain used for per-profile subdomains, e.g. <slug>.example.com.
+// Change this to match your own domain when you deploy the app.
+const APP_DOMAIN = 'example.com';
+
 function getProfileSubdomain() {
-  const match = window.location.hostname.match(/^([a-z0-9-]+)\.fayefiore\.com$/i);
+  const match = window.location.hostname.match(new RegExp(`^([a-z0-9-]+)\\.${APP_DOMAIN.replace(/\./g, '\\.')}$`, 'i'));
   return match && !RESERVED_SUBDOMAINS.includes(match[1]) ? match[1] : null;
 }
 
 export default function App() {
   const profileSlug = getProfileSubdomain();
 
-  // Sur un sous-domaine profil (heloise.fayefiore.com), on affiche directement
-  // la page publique du profil, sans le préfixe /app du domaine principal.
+  // On a profile subdomain (e.g. alice.example.com), render the public
+  // profile directly, without the /app prefix used on the main domain.
   if (profileSlug) {
     return (
       <BrowserRouter basename="/">

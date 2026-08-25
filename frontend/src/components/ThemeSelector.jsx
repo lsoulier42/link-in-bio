@@ -8,7 +8,7 @@ export default function ThemeSelector({ currentTheme, onSelect }) {
     <div>
       <label className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-3">
         <Palette className="w-4 h-4" aria-hidden="true" />
-        Thème du profil
+        Profile theme
       </label>
       <div className="grid grid-cols-2 gap-3">
         {themes.map((theme) => {

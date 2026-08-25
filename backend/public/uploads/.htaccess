@@ -1,4 +1,4 @@
-# Défense en profondeur : ce dossier ne doit JAMAIS exécuter de PHP
+# Defense in depth: this folder must NEVER execute PHP
 <IfModule mod_php.c>
     php_flag engine off
 </IfModule>

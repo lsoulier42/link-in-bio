@@ -10,11 +10,11 @@ import { ExternalLink, Gift, Heart, Star, Globe, Mail, Phone, Link as LinkIcon }
 import { ThroneIcon, MymIcon, FanslyIcon } from './local';
 
 export const CATEGORIES = [
-  { key: 'social', label: 'Réseaux sociaux' },
-  { key: 'creator', label: 'Créateurs & streaming' },
+  { key: 'social', label: 'Social networks' },
+  { key: 'creator', label: 'Creators & streaming' },
   { key: 'tech', label: 'Tech & dev' },
   { key: 'shop', label: 'Shopping' },
-  { key: 'generic', label: 'Générique' },
+  { key: 'generic', label: 'Generic' },
 ];
 
 export const ICONS = {
@@ -48,14 +48,14 @@ export const ICONS = {
   vinted: { label: 'Vinted', Icon: SiVinted, category: 'shop' },
   paypal: { label: 'PayPal', Icon: SiPaypal, category: 'shop' },
   stripe: { label: 'Stripe', Icon: SiStripe, category: 'shop' },
-  'external-link': { label: 'Lien externe', Icon: ExternalLink, category: 'generic' },
-  link: { label: 'Lien', Icon: LinkIcon, category: 'generic' },
-  gift: { label: 'Cadeau', Icon: Gift, category: 'generic' },
-  heart: { label: 'Cœur', Icon: Heart, category: 'generic' },
-  star: { label: 'Étoile', Icon: Star, category: 'generic' },
-  globe: { label: 'Site web', Icon: Globe, category: 'generic' },
-  mail: { label: 'E-mail', Icon: Mail, category: 'generic' },
-  phone: { label: 'Téléphone', Icon: Phone, category: 'generic' },
+  'external-link': { label: 'External link', Icon: ExternalLink, category: 'generic' },
+  link: { label: 'Link', Icon: LinkIcon, category: 'generic' },
+  gift: { label: 'Gift', Icon: Gift, category: 'generic' },
+  heart: { label: 'Heart', Icon: Heart, category: 'generic' },
+  star: { label: 'Star', Icon: Star, category: 'generic' },
+  globe: { label: 'Website', Icon: Globe, category: 'generic' },
+  mail: { label: 'Email', Icon: Mail, category: 'generic' },
+  phone: { label: 'Phone', Icon: Phone, category: 'generic' },
 };
 
 export const ALLOWED_ICON_NAMES = Object.keys(ICONS);
@@ -64,7 +64,7 @@ export function resolveIcon(iconName) {
   if (!iconName) return ExternalLink;
   const entry = ICONS[iconName];
   if (entry) return entry.Icon;
-  // Compatibilité avec les anciennes valeurs en texte libre (lookup dynamique lucide)
+  // Compatibility with legacy free-text values (dynamic lucide lookup)
   const pascalCase = iconName
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))

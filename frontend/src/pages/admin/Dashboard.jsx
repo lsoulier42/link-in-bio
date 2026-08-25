@@ -58,17 +58,17 @@ export default function Dashboard() {
   return (
     <div className="relative z-10">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight text-white">Mes profils</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-white">My profiles</h1>
         <p className="mt-1 text-sm text-slate-400">
-          Gérez vos pages de liens et leur apparence.
+          Manage your link pages and how they look.
         </p>
       </div>
 
       {profiles.length === 0 ? (
         <EmptyState
           icon={<Users className="w-7 h-7" aria-hidden="true" />}
-          title="Aucun profil"
-          description="Votre compte ne possède encore aucune page de liens publique."
+          title="No profile yet"
+          description="Your account doesn't have any public link page yet."
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
@@ -105,22 +105,22 @@ export default function Dashboard() {
                   className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-[var(--accent-soft)] text-violet-200 rounded-xl text-sm font-medium hover:bg-[var(--accent)] hover:text-white transition-colors"
                 >
                   <LinkIcon className="w-4 h-4" aria-hidden="true" />
-                  Liens
+                  Links
                 </Link>
                 <Link
                   to={`/admin/profile/${profile.id}`}
                   className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/5 border border-white/10 text-slate-200 rounded-xl text-sm font-medium hover:bg-white/10 transition-colors"
                 >
                   <Settings className="w-4 h-4" aria-hidden="true" />
-                  Profil
+                  Profile
                 </Link>
                 <a
                   href={`/app/${profile.slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center px-3 py-2 bg-white/5 border border-white/10 text-slate-200 rounded-xl text-sm hover:bg-white/10 transition-colors"
-                  title="Voir la page publique"
-                  aria-label={`Voir la page publique de ${profile.displayName}`}
+                  title="View public page"
+                  aria-label={`View the public page of ${profile.displayName}`}
                 >
                   <Eye className="w-4 h-4" aria-hidden="true" />
                 </a>

@@ -70,7 +70,7 @@ export default function PublicProfile({ slug: slugProp }) {
       <div className="min-h-screen flex items-center justify-center" style={{ background: '#0b1020' }}>
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white mb-2">404</h1>
-          <p className="text-gray-400">Ce profil n'existe pas</p>
+          <p className="text-gray-400">This profile doesn't exist</p>
         </div>
       </div>
     );
@@ -80,14 +80,14 @@ export default function PublicProfile({ slug: slugProp }) {
   const hasBackground = Boolean(profile.backgroundUrl);
   const sections = groupLinksByCategory(links, categories);
 
-  // Couleurs de texte personnalisées (priorité sur celles du thème).
+  // Custom text colors (override the theme).
   const textColorStyles = {
     ...(profile.nameColor ? { '--profile-name-color': profile.nameColor } : {}),
     ...(profile.bioColor ? { '--profile-bio-color': profile.bioColor } : {}),
     ...(profile.categoryColor ? { '--category-name-color': profile.categoryColor } : {}),
   };
 
-  // Familles de police personnalisées (priorité sur celle du thème).
+  // Custom font families (override the theme).
   const textFontStyles = {
     ...(profile.nameFont ? { '--profile-name-font': getFontStack(profile.nameFont) } : {}),
     ...(profile.bioFont ? { '--profile-bio-font': getFontStack(profile.bioFont) } : {}),
@@ -104,8 +104,8 @@ export default function PublicProfile({ slug: slugProp }) {
 
   return (
     <div className="profile-page min-h-screen relative" style={{ ...theme.styles, ...textColorStyles, ...textFontStyles }}>
-      {/* Desktop-only backdrop : image du profil floutée en transparence,
-          ou fond simple avec halos discrets quand il n'y a pas d'image. */}
+      {/* Desktop-only backdrop: blurred profile image in transparency,
+          or a simple background with subtle glows when there is no image. */}
       <div className="hidden md:block fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
         {hasBackground ? (
           <>
@@ -123,7 +123,7 @@ export default function PublicProfile({ slug: slugProp }) {
         )}
       </div>
 
-      {/* Mobile-only : image de fond plein écran fixe (comportement inchangé) */}
+      {/* Mobile-only: fixed full-screen background image */}
       {hasBackground && (
         <div
           className="md:hidden fixed top-0 inset-x-0 z-0 pointer-events-none"
@@ -150,20 +150,20 @@ export default function PublicProfile({ slug: slugProp }) {
         </div>
       )}
 
-      {/* Mobile-only : orbes animés plein écran (comportement inchangé) */}
+      {/* Mobile-only: full-screen animated orbs */}
       <div className="md:hidden fixed inset-0 z-[1] overflow-hidden pointer-events-none">
         <Orbs />
       </div>
 
-      {/* Contenu : plein écran sur mobile, cadre type téléphone sur desktop */}
+      {/* Content: full-screen on mobile, phone-style frame on desktop */}
       <div className="relative z-10 md:flex md:min-h-screen md:items-start md:justify-center">
         <div className="relative w-full md:max-w-[560px] md:mt-6 md:rounded-t-[2.75rem] md:ring-1 md:ring-white/10 md:shadow-[0_20px_60px_rgba(0,0,0,0.5)] md:overflow-hidden">
-          {/* Surface du thème */}
+          {/* Theme surface */}
           <div
             className="relative min-h-[100lvh] md:min-h-[calc(100lvh-1.5rem)]"
             style={hasBackground ? {} : { background: theme.styles['--bg-gradient'] }}
           >
-            {/* Desktop-only : image de fond + orbes animés à l'intérieur du cadre */}
+            {/* Desktop-only: background image + animated orbs inside the frame */}
             <div className="hidden md:block absolute inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
               {hasBackground && (
                 <>

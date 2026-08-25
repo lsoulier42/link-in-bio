@@ -50,7 +50,7 @@ export function ToastProvider({ children }) {
               <button
                 type="button"
                 onClick={() => dismiss(toast.id)}
-                aria-label="Fermer la notification"
+                aria-label="Close notification"
                 className="shrink-0 p-0.5 rounded text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
               >
                 <X className="w-4 h-4" aria-hidden="true" />
@@ -65,6 +65,6 @@ export function ToastProvider({ children }) {
 
 export function useToast() {
   const ctx = useContext(ToastContext);
-  if (!ctx) throw new Error('useToast doit être utilisé dans un <ToastProvider>');
+  if (!ctx) throw new Error('useToast must be used inside a <ToastProvider>');
   return ctx;
 }

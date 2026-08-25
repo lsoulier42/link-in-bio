@@ -1,8 +1,8 @@
 FROM php:8.5-apache
 
-# Installation des dépendances système et PHP
-# Note : extensions installées séparément car un build groupé d'intl
-# échoue sur PHP 8.5 (install-modules) ; opcache est déjà inclus.
+# Install system and PHP dependencies
+# Note: extensions are installed separately because a grouped build of intl
+# fails on PHP 8.5 (install-modules); opcache is already included.
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -21,13 +21,13 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gd \
     && a2enmod rewrite
 
-# Configuration d'Apache
+# Apache configuration
 COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 
-# Installation de Composer
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Définition du répertoire de travail
+# Working directory
 WORKDIR /var/www/html
 
 # Permissions

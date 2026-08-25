@@ -11,7 +11,7 @@ function loadImage(src) {
   return new Promise((resolve, reject) => {
     const image = new Image();
     image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error("Impossible de charger l'image"));
+    image.onerror = () => reject(new Error('Unable to load the image'));
     image.src = src;
   });
 }
@@ -22,7 +22,7 @@ async function createCroppedBlob(imageSrc, pixelCrop) {
   canvas.width = TARGET_SIZE;
   canvas.height = TARGET_SIZE;
   const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('Canvas non supporté par ce navigateur');
+  if (!ctx) throw new Error('Canvas is not supported by this browser');
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(
@@ -39,7 +39,7 @@ async function createCroppedBlob(imageSrc, pixelCrop) {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (blob) resolve(blob);
-      else reject(new Error("Impossible d'exporter l'image recadrée"));
+      else reject(new Error('Unable to export the cropped image'));
     }, 'image/webp', 0.85);
   });
 }
@@ -80,16 +80,16 @@ export default function ImageCropper({ open, imageSrc, onClose, onConfirm }) {
     <Drawer
       open={open}
       onClose={onClose}
-      title="Recadrer l'image"
-      description="Déplacez et zoomez, puis validez"
+      title="Crop image"
+      description="Move and zoom, then confirm"
       footer={
         <div className="flex justify-end gap-2">
           <Button variant="secondary" onClick={onClose} disabled={processing}>
-            Annuler
+            Cancel
           </Button>
           <Button onClick={handleConfirm} loading={processing} disabled={!pixelCrop}>
             {!processing && <Crop className="w-4 h-4" aria-hidden="true" />}
-            Recadrer
+            Crop
           </Button>
         </div>
       }

@@ -13,14 +13,14 @@ export default function PhonePreview({ profile, links, categories = [] }) {
   const hiddenCount = links.length - visibleLinks.length;
   const sections = groupLinksByCategory(visibleLinks, categories);
 
-  // Couleurs de texte personnalisées (priorité sur celles du thème).
+  // Custom text colors (override the theme).
   const textColorStyles = {
     ...(profile.nameColor ? { '--profile-name-color': profile.nameColor } : {}),
     ...(profile.bioColor ? { '--profile-bio-color': profile.bioColor } : {}),
     ...(profile.categoryColor ? { '--category-name-color': profile.categoryColor } : {}),
   };
 
-  // Familles de police personnalisées (priorité sur celle du thème).
+  // Custom font families (override the theme).
   const textFontStyles = {
     ...(profile.nameFont ? { '--profile-name-font': getFontStack(profile.nameFont) } : {}),
     ...(profile.bioFont ? { '--profile-bio-font': getFontStack(profile.bioFont) } : {}),
@@ -32,9 +32,9 @@ export default function PhonePreview({ profile, links, categories = [] }) {
       <div className="flex items-center justify-between mb-4 px-1">
         <p className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-300">
           <Smartphone className="w-4 h-4 text-violet-300" aria-hidden="true" />
-          Aperçu public
+          Public preview
         </p>
-        <span className="text-[11px] text-slate-500">valeurs enregistrées</span>
+        <span className="text-[11px] text-slate-500">saved values</span>
       </div>
 
       <div className="mx-auto max-w-[300px] rounded-[28px] p-2 border border-white/15 bg-black/30">
@@ -171,7 +171,7 @@ export default function PhonePreview({ profile, links, categories = [] }) {
             {hiddenCount > 0 && (
               <p className="mt-3 inline-flex items-center gap-1.5 text-[11px]" style={{ color: 'var(--text-secondary)' }}>
                 <EyeOff className="w-3.5 h-3.5" aria-hidden="true" />
-                {hiddenCount} lien{hiddenCount > 1 ? 's' : ''} masqué{hiddenCount > 1 ? 's' : ''}
+                {hiddenCount} hidden link{hiddenCount > 1 ? 's' : ''}
               </p>
             )}
           </div>

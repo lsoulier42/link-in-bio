@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api/admin/profiles/{profileId}/links')]
 class AdminLinkController extends AbstractController
 {
-    // Doit rester synchronisé avec le registre d'icônes côté frontend (frontend/src/icons/index.js)
+    // Must stay in sync with the frontend icon registry (frontend/src/icons/index.js)
     private const ALLOWED_ICON_NAMES = [
         'x', 'instagram', 'bluesky', 'threads', 'mastodon', 'facebook', 'tiktok', 'snapchat',
         'pinterest', 'youtube', 'tumblr', 'discord', 'reddit', 'linkedin', 'whatsapp',
@@ -94,22 +94,22 @@ class AdminLinkController extends AbstractController
     }
 
     /**
-     * Applique le formulaire unifié (6 étapes) sur un lien.
-     * Retourne null en cas de succès, sinon un message d'erreur.
+     * Applies the unified (6-step) form to a link.
+     * Returns null on success, otherwise an error message.
      *
-     * Accepte aussi les payloads legacy :
-     *  - réseau : { networkType, handle }
-     *  - custom : { title, url, iconName }
+     * Also accepts legacy payloads:
+     *  - network: { networkType, handle }
+     *  - custom: { title, url, iconName }
      */
     private function applyLink(Link $link, array $data): ?string
     {
         $mode = $this->resolveMode($data, $link);
 
-        // Titre (obligatoire), avec repli sur le label de la plateforme pour le mode handle
+        // Title (required), falling back to the platform label in handle mode
         if (array_key_exists('title', $data)) {
             $title = trim((string) $data['title']);
             if ($title === '' || mb_strlen($title) > 128) {
-                return 'Le titre est requis';
+                return 'The title is required';
             }
         } else {
             $title = $link->getTitle();
@@ -120,14 +120,14 @@ class AdminLinkController extends AbstractController
             $handle = (string) ($data['handle'] ?? $link->getHandle() ?? '');
             $network = $this->socialNetwork->getNetwork($networkType);
             if ($network === null) {
-                return 'Choisissez une plateforme valide';
+                return 'Choose a valid platform';
             }
             if ($handle === '') {
-                return 'Le pseudo est requis';
+                return 'The handle is required';
             }
             $url = $this->socialNetwork->buildUrl($networkType, $handle);
             if ($url === null) {
-                return 'Pseudo invalide pour cette plateforme';
+                return 'Invalid handle for this platform';
             }
             if ($title === null || $title === '') {
                 $title = $network['label'];
@@ -138,10 +138,10 @@ class AdminLinkController extends AbstractController
         } else {
             $url = trim((string) ($data['url'] ?? $link->getUrl() ?? ''));
             if ($url === '') {
-                return 'L’URL est requise';
+                return 'The URL is required';
             }
             if (mb_strlen($url) > 512 || !$this->isValidHttpUrl($url)) {
-                return 'Entrez une URL valide (http:// ou https://)';
+                return 'Enter a valid URL (http:// or https://)';
             }
             $link->setUrl($url);
             $link->setNetworkType(null);
@@ -149,44 +149,44 @@ class AdminLinkController extends AbstractController
         }
 
         if ($title === null || $title === '') {
-            return 'Le titre est requis';
+            return 'The title is required';
         }
         $link->setTitle($title);
 
-        // Sous-titre (optionnel)
+        // Subtitle (optional)
         if (array_key_exists('subtitle', $data)) {
             $subtitle = trim((string) $data['subtitle']);
             if (mb_strlen($subtitle) > 128) {
-                return 'Le sous-titre ne doit pas dépasser 128 caractères';
+                return 'The subtitle must not exceed 128 characters';
             }
             $link->setSubtitle($subtitle === '' ? null : $subtitle);
         }
 
-        // Icône : nom whitelisté et/ou image uploadée
+        // Icon: whitelisted name and/or uploaded image
         if (array_key_exists('iconName', $data)) {
             if (!$this->isValidIconName($data['iconName'])) {
-                return 'Icône invalide';
+                return 'Invalid icon';
             }
             $link->setIconName($data['iconName'] === null || $data['iconName'] === '' ? null : $data['iconName']);
         }
         if (array_key_exists('iconUrl', $data)) {
             $iconUrl = $this->sanitizeIconUrl($data['iconUrl']);
             if ($iconUrl === false) {
-                return 'Icône personnalisée invalide';
+                return 'Invalid custom icon';
             }
             $link->setIconUrl($iconUrl === '' ? null : $iconUrl);
         }
 
-        // Style d'affichage
+        // Display style
         if (array_key_exists('displayStyle', $data)) {
             $displayStyle = $data['displayStyle'];
             if (!in_array($displayStyle, self::DISPLAY_STYLES, true)) {
-                return 'Style d’affichage invalide';
+                return 'Invalid display style';
             }
             $link->setDisplayStyle($displayStyle);
         }
 
-        // Catégorie (optionnelle)
+        // Category (optional)
         if (array_key_exists('categoryId', $data)) {
             $categoryId = $data['categoryId'];
             if ($categoryId === null || $categoryId === '') {
@@ -194,7 +194,7 @@ class AdminLinkController extends AbstractController
             } else {
                 $category = $this->categoryRepository->find($categoryId);
                 if (!$category || $category->getProfile() !== $link->getProfile()) {
-                    return 'Catégorie invalide';
+                    return 'Invalid category';
                 }
                 $link->setCategory($category);
             }
@@ -301,12 +301,12 @@ class AdminLinkController extends AbstractController
                 return $this->json(['error' => $error], 422);
             }
         } else {
-            // Payload partiel legacy : isActive, position, title, url, iconName seuls
+            // Partial legacy payload: isActive, position, title, url, iconName only
             if (isset($data['title'])) $link->setTitle($data['title']);
             if (isset($data['url'])) $link->setUrl($data['url']);
             if (array_key_exists('iconName', $data)) {
                 if (!$this->isValidIconName($data['iconName'])) {
-                    return $this->json(['error' => 'Icône invalide'], 422);
+                    return $this->json(['error' => 'Invalid icon'], 422);
                 }
                 $link->setIconName($data['iconName'] === '' ? null : $data['iconName']);
             }
@@ -316,7 +316,7 @@ class AdminLinkController extends AbstractController
                     $handle = $data['handle'] ?? $link->getHandle();
                     $url = $this->socialNetwork->buildUrl($networkType, (string) $handle);
                     if ($url === null) {
-                        return $this->json(['error' => 'Réseau social ou handle invalide'], 422);
+                        return $this->json(['error' => 'Invalid social network or handle'], 422);
                     }
                     $link->setNetworkType($networkType);
                     $link->setHandle($this->socialNetwork->normalizeHandle((string) $handle));

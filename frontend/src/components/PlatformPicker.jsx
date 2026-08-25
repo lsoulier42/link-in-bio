@@ -18,9 +18,9 @@ export default function PlatformPicker({ value, onSelect }) {
           <X className="w-4 h-4 text-slate-300" aria-hidden="true" />
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block text-sm font-medium text-white">Aucune plateforme</span>
+          <span className="block text-sm font-medium text-white">No platform</span>
           <span className="block text-xs text-slate-400 truncate">
-            Lien 100% personnalisé, tout est libre
+            Fully custom link, everything is free
           </span>
         </span>
         {value === '' && (

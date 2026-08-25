@@ -21,7 +21,7 @@ export default function IconPicker({ value, onSelect, onClear }) {
   return (
     <div>
       <div className="flex items-center gap-3 mb-3">
-        <label className="text-sm font-medium text-slate-200">Icône</label>
+        <label className="text-sm font-medium text-slate-200">Icon</label>
         {value && (
           <button
             type="button"
@@ -29,7 +29,7 @@ export default function IconPicker({ value, onSelect, onClear }) {
             className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors"
           >
             <X className="w-3 h-3" aria-hidden="true" />
-            Réinitialiser
+            Reset
           </button>
         )}
       </div>
@@ -38,7 +38,7 @@ export default function IconPicker({ value, onSelect, onClear }) {
         <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" aria-hidden="true" />
         <input
           type="text"
-          placeholder="Rechercher une plateforme..."
+          placeholder="Search for a platform..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full rounded-xl border border-white/10 bg-white/5 pl-9 pr-4 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/30 transition-colors"
@@ -85,7 +85,7 @@ export default function IconPicker({ value, onSelect, onClear }) {
         ))}
 
         {filtered.length === 0 && (
-          <p className="text-sm text-slate-400 text-center py-4">Aucune icône trouvée</p>
+          <p className="text-sm text-slate-400 text-center py-4">No icons found</p>
         )}
       </div>
     </div>

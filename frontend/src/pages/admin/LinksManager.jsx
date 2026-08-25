@@ -41,23 +41,23 @@ const EMPTY_FORM = {
 };
 
 const STEPS = [
-  { key: 'platform', label: 'Plateforme' },
-  { key: 'link', label: 'Lien' },
-  { key: 'title', label: 'Titre' },
-  { key: 'category', label: 'Catégorie' },
-  { key: 'subtitle', label: 'Sous-titre' },
-  { key: 'icon', label: 'Icône' },
-  { key: 'display', label: 'Affichage' },
+  { key: 'platform', label: 'Platform' },
+  { key: 'link', label: 'Link' },
+  { key: 'title', label: 'Title' },
+  { key: 'category', label: 'Category' },
+  { key: 'subtitle', label: 'Subtitle' },
+  { key: 'icon', label: 'Icon' },
+  { key: 'display', label: 'Display' },
 ];
 
 const STEP_DESCRIPTIONS = {
-  platform: 'Choisissez une plateforme (optionnel) ou créez un lien libre.',
-  link: 'Générez le lien depuis un pseudo ou saisissez une URL personnalisée.',
-  title: 'Donnez un titre à votre lien.',
-  category: 'Rangez ce lien dans une catégorie (optionnel).',
-  subtitle: 'Ajoutez un sous-titre (optionnel).',
-  icon: 'Choisissez une icône existante ou importez la vôtre.',
-  display: 'Choisissez comment afficher ce lien sur votre page.',
+  platform: 'Choose a platform (optional) or create a free link.',
+  link: 'Generate the link from a handle or enter a custom URL.',
+  title: 'Give your link a title.',
+  category: 'Put this link in a category (optional).',
+  subtitle: 'Add a subtitle (optional).',
+  icon: 'Choose an existing icon or import your own.',
+  display: 'Choose how this link appears on your page.',
 };
 
 function isValidHttpUrl(value) {
@@ -270,18 +270,18 @@ export default function LinksManager() {
     switch (index) {
       case 1:
         if (form.linkMode === 'handle') {
-          if (!form.platform) errors.platform = 'Choisissez une plateforme pour générer le lien';
-          if (!form.handle.trim()) errors.handle = 'Le pseudo est requis';
-          else if (!generatedUrl) errors.handle = 'Pseudo invalide pour cette plateforme';
+          if (!form.platform) errors.platform = 'Choose a platform to generate the link';
+          if (!form.handle.trim()) errors.handle = 'The handle is required';
+          else if (!generatedUrl) errors.handle = 'Invalid handle for this platform';
         } else {
-          if (!form.url.trim()) errors.url = 'L’URL est requise';
+          if (!form.url.trim()) errors.url = 'The URL is required';
           else if (!isValidHttpUrl(form.url.trim())) {
-            errors.url = 'Entrez une URL valide (http:// ou https://)';
+            errors.url = 'Enter a valid URL (http:// or https://)';
           }
         }
         break;
       case 2:
-        if (!form.title.trim()) errors.title = 'Le titre est requis';
+        if (!form.title.trim()) errors.title = 'The title is required';
         break;
       default:
         break;
@@ -337,16 +337,16 @@ export default function LinksManager() {
       };
       if (editingLink) {
         await api.updateLink(profileId, editingLink.id, payload);
-        toast('Lien modifié');
+        toast('Link updated');
       } else {
         await api.createLink(profileId, payload);
-        toast('Lien créé');
+        toast('Link created');
       }
       resetForm();
       fetchLinks();
     } catch (err) {
-      setServerError(err.message || 'Erreur lors de l’enregistrement');
-      toast(editingLink ? 'Erreur lors de la modification' : 'Erreur lors de la création', 'error');
+      setServerError(err.message || 'Error while saving');
+      toast(editingLink ? 'Error while updating' : 'Error while creating', 'error');
     } finally {
       savingRef.current = false;
       setSaving(false);
@@ -357,10 +357,10 @@ export default function LinksManager() {
     setSavingToggleId(link.id);
     try {
       await api.updateLink(profileId, link.id, { isActive: !link.isActive });
-      toast(link.isActive ? 'Lien masqué' : 'Lien activé');
+      toast(link.isActive ? 'Link hidden' : 'Link activated');
       fetchLinks();
     } catch {
-      toast('Erreur lors de la mise à jour', 'error');
+      toast('Error while updating', 'error');
     } finally {
       setSavingToggleId(null);
     }
@@ -369,9 +369,9 @@ export default function LinksManager() {
   const persistOrder = async (ordered) => {
     try {
       await api.reorderLinks(profileId, ordered.map((l) => l.id));
-      toast('Ordre enregistré');
+      toast('Order saved');
     } catch {
-      toast('Impossible d’enregistrer l’ordre', 'error');
+      toast('Unable to save the order', 'error');
       fetchLinks();
     }
   };
@@ -424,11 +424,11 @@ export default function LinksManager() {
     setDeleting(true);
     try {
       await api.deleteLink(profileId, confirmDelete.id);
-      toast('Lien supprimé');
+      toast('Link deleted');
       setConfirmDelete(null);
       fetchLinks();
     } catch {
-      toast('Erreur lors de la suppression', 'error');
+      toast('Error while deleting', 'error');
     } finally {
       setDeleting(false);
     }
@@ -440,14 +440,14 @@ export default function LinksManager() {
     setCategoryBusy(true);
     try {
       const created = await api.createCategory(profileId, { name: trimmed });
-      toast('Catégorie créée');
+      toast('Category created');
       fetchCategories();
       if (select) setForm((prev) => ({ ...prev, categoryId: String(created.id) }));
       setNewCategoryName('');
       setCreatingCategory(false);
       return created;
     } catch (err) {
-      toast(err.message || 'Erreur lors de la création de la catégorie', 'error');
+      toast(err.message || 'Error while creating the category', 'error');
       return null;
     } finally {
       setCategoryBusy(false);
@@ -463,10 +463,10 @@ export default function LinksManager() {
     setCategoryBusy(true);
     try {
       await api.updateCategory(profileId, category.id, { name: trimmed });
-      toast('Catégorie renommée');
+      toast('Category renamed');
       fetchCategories();
     } catch (err) {
-      toast(err.message || 'Erreur lors du renommage', 'error');
+      toast(err.message || 'Error while renaming', 'error');
     } finally {
       setCategoryBusy(false);
       setEditingCategoryId(null);
@@ -478,12 +478,12 @@ export default function LinksManager() {
     setCategoryBusy(true);
     try {
       await api.deleteCategory(profileId, confirmDeleteCategory.id);
-      toast('Catégorie supprimée');
+      toast('Category deleted');
       setConfirmDeleteCategory(null);
       fetchCategories();
       fetchLinks();
     } catch (err) {
-      toast(err.message || 'Erreur lors de la suppression', 'error');
+      toast(err.message || 'Error while deleting', 'error');
     } finally {
       setCategoryBusy(false);
     }
@@ -498,7 +498,7 @@ export default function LinksManager() {
     api
       .reorderCategories(profileId, next.map((c) => c.id))
       .catch(() => {
-        toast('Impossible d’enregistrer l’ordre', 'error');
+        toast('Unable to save the order', 'error');
         fetchCategories();
       });
   };
@@ -514,20 +514,20 @@ export default function LinksManager() {
         className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors mb-5"
       >
         <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-        Retour au dashboard
+        Back to dashboard
       </RouterLink>
 
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Gérer les liens</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-white">Manage links</h1>
           <p className="mt-1 text-sm text-slate-400">
             {profile ? (
               <>
-                Page publique : <span className="text-slate-300">/{profile.slug}</span>
+                Public page: <span className="text-slate-300">/{profile.slug}</span>
               </>
             ) : (
-              'Réordonnez, activez ou modifiez vos liens.'
+              'Reorder, toggle or edit your links.'
             )}
           </p>
         </div>
@@ -542,7 +542,7 @@ export default function LinksManager() {
               >
                 <Button variant="secondary">
                   <ExternalLink className="w-4 h-4" aria-hidden="true" />
-                  Voir la page publique
+                  View public page
                 </Button>
               </a>
               <Button
@@ -551,13 +551,13 @@ export default function LinksManager() {
                 onClick={() => setPreviewOpen(true)}
               >
                 <Smartphone className="w-4 h-4" aria-hidden="true" />
-                Aperçu
+                Preview
               </Button>
             </>
           )}
           <Button onClick={openCreate}>
             <Plus className="w-4 h-4" aria-hidden="true" />
-            Ajouter un lien
+            Add a link
           </Button>
         </div>
       </div>
@@ -587,16 +587,16 @@ export default function LinksManager() {
                 <div>
                   <p className="inline-flex items-center gap-1.5 text-sm font-semibold text-white">
                     <Tag className="w-4 h-4 text-violet-300" aria-hidden="true" />
-                    Catégories
+                    Categories
                   </p>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    Optionnel — groupez vos liens pour les afficher par sections.
+                    Optional — group your links to display them as sections.
                   </p>
                 </div>
                 {!creatingCategory && (
                   <Button variant="secondary" size="sm" onClick={() => { setCreatingCategory(true); setNewCategoryName(''); }}>
                     <FolderPlus className="w-4 h-4" aria-hidden="true" />
-                    Nouvelle
+                    New
                   </Button>
                 )}
               </div>
@@ -606,7 +606,7 @@ export default function LinksManager() {
                   <input
                     autoFocus
                     type="text"
-                    placeholder="Nom de la catégorie (ex : Réseaux sociaux)"
+                    placeholder="Category name (e.g. Social media)"
                     value={newCategoryName}
                     onChange={(e) => setNewCategoryName(e.target.value)}
                     onKeyDown={(e) => {
@@ -622,7 +622,7 @@ export default function LinksManager() {
                     disabled={!newCategoryName.trim()}
                   >
                     <Check className="w-4 h-4" aria-hidden="true" />
-                    Créer
+                    Create
                   </Button>
                   <Button variant="ghost" size="sm" onClick={() => setCreatingCategory(false)} disabled={categoryBusy}>
                     <X className="w-4 h-4" aria-hidden="true" />
@@ -632,7 +632,7 @@ export default function LinksManager() {
 
               {categories.length === 0 && !creatingCategory ? (
                 <p className="text-xs text-slate-500">
-                  Aucune catégorie. Les liens sans catégorie s'affichent directement en haut de la page.
+                  No categories yet. Links without a category appear at the top of the page.
                 </p>
               ) : (
                 <ul className="flex flex-wrap gap-2">
@@ -659,7 +659,7 @@ export default function LinksManager() {
                             onClick={() => handleRenameCategory(category, editCategoryName)}
                             disabled={categoryBusy}
                             className="p-1 rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
-                            aria-label="Valider le renommage"
+                            aria-label="Confirm rename"
                           >
                             <Check className="w-3.5 h-3.5" aria-hidden="true" />
                           </button>
@@ -667,14 +667,14 @@ export default function LinksManager() {
                       ) : (
                         <>
                           <span className="text-sm text-slate-200">{category.name}</span>
-                          <span className="text-[11px] text-slate-500" title="Nombre de liens">
+                          <span className="text-[11px] text-slate-500" title="Number of links">
                             {category.linkCount}
                           </span>
                           <button
                             type="button"
                             onClick={() => { setEditingCategoryId(category.id); setEditCategoryName(category.name); }}
                             className="p-1 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
-                            aria-label={`Renommer ${category.name}`}
+                            aria-label={`Rename ${category.name}`}
                           >
                             <Pencil className="w-3 h-3" aria-hidden="true" />
                           </button>
@@ -685,7 +685,7 @@ export default function LinksManager() {
                         onClick={() => moveCategory(index, -1)}
                         disabled={index === 0}
                         className="p-1 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-400"
-                        aria-label={`Monter ${category.name}`}
+                        aria-label={`Move ${category.name} up`}
                       >
                         <ArrowUp className="w-3 h-3" aria-hidden="true" />
                       </button>
@@ -694,7 +694,7 @@ export default function LinksManager() {
                         onClick={() => moveCategory(index, 1)}
                         disabled={index === categories.length - 1}
                         className="p-1 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-400"
-                        aria-label={`Descendre ${category.name}`}
+                        aria-label={`Move ${category.name} down`}
                       >
                         <ArrowDown className="w-3 h-3" aria-hidden="true" />
                       </button>
@@ -702,7 +702,7 @@ export default function LinksManager() {
                         type="button"
                         onClick={() => setConfirmDeleteCategory(category)}
                         className="p-1 rounded-full text-slate-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
-                        aria-label={`Supprimer ${category.name}`}
+                        aria-label={`Delete ${category.name}`}
                       >
                         <Trash2 className="w-3 h-3" aria-hidden="true" />
                       </button>
@@ -733,8 +733,8 @@ export default function LinksManager() {
                     draggable
                     onDragStart={handleDragStart(index)}
                     onDragEnd={handleDragEnd}
-                    aria-label={`Réordonner le lien ${title || ''}`}
-                    title="Glisser pour réordonner"
+                    aria-label={`Reorder the link ${title || ''}`}
+                    title="Drag to reorder"
                     className="cursor-grab active:cursor-grabbing p-1 rounded-md text-slate-500 hover:text-slate-200 hover:bg-white/10 transition-colors touch-none"
                   >
                     <GripVertical className="w-4 h-4" aria-hidden="true" />
@@ -763,12 +763,12 @@ export default function LinksManager() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className={`font-medium text-sm truncate ${link.isActive ? 'text-white' : 'text-slate-300'}`}>
-                        {title || 'Lien'}
+                        {title || 'Link'}
                       </p>
                       {!link.isActive && (
                         <Badge tone="muted">
                           <EyeOff className="w-3 h-3" aria-hidden="true" />
-                          Masqué
+                          Hidden
                         </Badge>
                       )}
                       {category && (
@@ -784,7 +784,7 @@ export default function LinksManager() {
                     </p>
                   </div>
 
-                  <span className="hidden sm:inline-flex items-center gap-1 text-xs text-slate-400" title="Nombre de clics">
+                  <span className="hidden sm:inline-flex items-center gap-1 text-xs text-slate-400" title="Click count">
                     <BarChart3 className="w-3.5 h-3.5" aria-hidden="true" />
                     {link.clickCount}
                   </span>
@@ -792,38 +792,38 @@ export default function LinksManager() {
                   <Toggle
                     checked={link.isActive}
                     onChange={() => handleToggle(link)}
-                    label={link.isActive ? `Masquer ${title || ''}` : `Activer ${title || ''}`}
+                    label={link.isActive ? `Hide ${title || ''}` : `Show ${title || ''}`}
                     busy={savingToggleId === link.id}
                   />
 
                   <DropdownMenu
-                    label="Actions du lien"
+                    label="Link actions"
                     trigger={<MoreVertical className="w-4 h-4" aria-hidden="true" />}
                     items={[
                       {
-                        label: 'Modifier',
+                        label: 'Edit',
                         icon: <Pencil className="w-4 h-4" aria-hidden="true" />,
                         onClick: () => openEdit(link),
                       },
                       {
-                        label: 'Ouvrir le lien',
+                        label: 'Open link',
                         icon: <ExternalLink className="w-4 h-4" aria-hidden="true" />,
                         onClick: () => window.open(link.url, '_blank', 'noopener,noreferrer'),
                       },
                       {
-                        label: 'Monter',
+                        label: 'Move up',
                         icon: <ArrowUp className="w-4 h-4" aria-hidden="true" />,
                         disabled: index === 0,
                         onClick: () => moveLink(index, -1),
                       },
                       {
-                        label: 'Descendre',
+                        label: 'Move down',
                         icon: <ArrowDown className="w-4 h-4" aria-hidden="true" />,
                         disabled: index === links.length - 1,
                         onClick: () => moveLink(index, 1),
                       },
                       {
-                        label: 'Supprimer',
+                        label: 'Delete',
                         icon: <Trash2 className="w-4 h-4" aria-hidden="true" />,
                         danger: true,
                         onClick: () => setConfirmDelete(link),
@@ -837,12 +837,12 @@ export default function LinksManager() {
             {links.length === 0 && (
               <EmptyState
                 icon={<Link2 className="w-7 h-7" aria-hidden="true" />}
-                title="Aucun lien pour le moment"
-                description="Ajoutez votre premier lien pour commencer à partager vos réseaux, votre site ou tout autre contenu."
+                title="No links yet"
+                description="Add your first link to start sharing your social networks, your website or anything else."
                 action={
                   <Button onClick={openCreate}>
                     <Plus className="w-4 h-4" aria-hidden="true" />
-                    Ajouter votre premier lien
+                    Add your first link
                   </Button>
                 }
               />
@@ -862,7 +862,7 @@ export default function LinksManager() {
       <Drawer
         open={drawerOpen}
         onClose={requestClose}
-        title={editingLink ? 'Modifier le lien' : 'Nouveau lien'}
+        title={editingLink ? 'Edit link' : 'New link'}
         description={STEP_DESCRIPTIONS[STEPS[step].key]}
         footer={
           <StepperFooter
@@ -872,7 +872,7 @@ export default function LinksManager() {
             onBack={handleBack}
             onNext={handleNext}
             onSubmit={handleSubmit}
-            submitLabel={editingLink ? 'Enregistrer' : 'Créer le lien'}
+            submitLabel={editingLink ? 'Save' : 'Create link'}
             saving={saving}
             onCancel={requestClose}
             cancelDisabled={saving}
@@ -899,8 +899,8 @@ export default function LinksManager() {
           <div className="space-y-4">
             <div className="flex gap-2">
               {[
-                { key: 'handle', label: 'Pseudo / handle' },
-                { key: 'url', label: 'Lien personnalisé' },
+                { key: 'handle', label: 'Handle' },
+                { key: 'url', label: 'Custom URL' },
               ].map((mode) => (
                 <button
                   key={mode.key}
@@ -923,18 +923,18 @@ export default function LinksManager() {
                 {!form.platform && (
                   <div className="flex items-center justify-between gap-3 glass-subtle rounded-[var(--radius-md)] px-4 py-3">
                     <p className="text-sm text-slate-300">
-                      Le mode « pseudo » nécessite une plateforme.
+                      Handle mode requires a platform.
                     </p>
                     <Button variant="secondary" size="sm" onClick={() => setStep(0)}>
-                      Choisir une plateforme
+                      Choose a platform
                     </Button>
                   </div>
                 )}
                 <Field
-                  label="Pseudo / handle"
+                  label="Handle"
                   htmlFor="handle"
                   error={stepErrors.handle}
-                  helper="Sans le @, il sera ajouté automatiquement."
+                  helper="Without the @, it will be added automatically."
                   required
                 >
                   <div className="relative">
@@ -945,7 +945,7 @@ export default function LinksManager() {
                     <input
                       id="handle"
                       type="text"
-                      placeholder="ex : louise"
+                      placeholder="ex : alice"
                       value={form.handle}
                       onChange={(e) => handleHandleChange(e.target.value)}
                       className={`${inputCls({ invalid: Boolean(stepErrors.handle) })} pl-10`}
@@ -957,7 +957,7 @@ export default function LinksManager() {
                   <div className="flex items-center gap-3 glass-subtle rounded-[var(--radius-md)] px-4 py-3">
                     <LinkIcon className="w-4 h-4 text-slate-400 shrink-0" aria-hidden="true" />
                     <div className="min-w-0">
-                      <p className="text-xs text-slate-500">Lien généré</p>
+                      <p className="text-xs text-slate-500">Generated link</p>
                       <p className="text-sm text-slate-300 truncate">{generatedUrl}</p>
                     </div>
                   </div>
@@ -975,7 +975,7 @@ export default function LinksManager() {
                 value={form.url}
                 onChange={(e) => setForm({ ...form, url: e.target.value })}
                 error={stepErrors.url}
-                helper="L’URL doit commencer par http:// ou https://."
+                helper="The URL must start with http:// or https://."
                 required
               />
             )}
@@ -986,11 +986,11 @@ export default function LinksManager() {
           <TextInput
             id="link-title"
             label="Titre"
-            placeholder="Ex : Mon site web"
+            placeholder="Ex: My website"
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
             error={stepErrors.title}
-            helper="Pré-rempli avec la plateforme, modifiable librement."
+            helper="Pre-filled with the platform, freely editable."
             required
           />
         )}
@@ -1007,16 +1007,16 @@ export default function LinksManager() {
                   : 'border-white/10 hover:border-white/25 hover:bg-white/5'
               }`}
             >
-              <span className="block text-sm font-semibold text-white">Aucune catégorie</span>
+              <span className="block text-sm font-semibold text-white">No category</span>
               <span className="block text-xs text-slate-400 mt-0.5">
-                Le lien s'affichera en haut de la page, hors sections.
+                The link will appear at the top of the page, outside sections.
               </span>
             </button>
 
             {categories.length > 0 && (
               <div>
                 <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">
-                  Catégories existantes
+                  Existing categories
                 </p>
                 <div className="space-y-2">
                   {categories.map((category) => {
@@ -1046,12 +1046,12 @@ export default function LinksManager() {
 
             <div className="pt-1 border-t border-white/10">
               <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">
-                Ou créer une catégorie
+                Or create a category
               </p>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
-                  placeholder="Nom de la catégorie"
+                  placeholder="Category name"
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
                   onKeyDown={(e) => {
@@ -1066,7 +1066,7 @@ export default function LinksManager() {
                   disabled={!newCategoryName.trim()}
                 >
                   <Plus className="w-4 h-4" aria-hidden="true" />
-                  Créer
+                  Create
                 </Button>
               </div>
             </div>
@@ -1076,14 +1076,14 @@ export default function LinksManager() {
         {step === 4 && (
           <TextInput
             id="link-subtitle"
-            label="Sous-titre"
-            placeholder="Ex : @louise"
+            label="Subtitle"
+            placeholder="Ex: @alice"
             value={form.subtitle}
             onChange={(e) => {
               setSubtitleAuto(false);
               setForm({ ...form, subtitle: e.target.value });
             }}
-            helper="Pré-rempli avec le pseudo, modifiable ou vide."
+            helper="Pre-filled with the handle, editable or empty."
           />
         )}
 
@@ -1097,8 +1097,8 @@ export default function LinksManager() {
               )}
               <span className="text-sm text-slate-300 truncate">
                 {form.iconUrl
-                  ? 'Icône personnalisée'
-                  : ICONS[form.iconName]?.label || 'Icône par défaut'}
+                  ? 'Custom icon'
+                  : ICONS[form.iconName]?.label || 'Default icon'}
               </span>
               {(form.iconName || form.iconUrl) && (
                 <button
@@ -1106,14 +1106,14 @@ export default function LinksManager() {
                   onClick={() => setForm({ ...form, iconName: '', iconUrl: '' })}
                   className="ml-auto text-xs text-slate-400 hover:text-white transition-colors shrink-0"
                 >
-                  Réinitialiser
+                  Reset
                 </button>
               )}
             </div>
 
             <div>
               <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">
-                Choisir une icône
+                Choose an icon
               </p>
               <IconPicker
                 value={form.iconName}
@@ -1124,7 +1124,7 @@ export default function LinksManager() {
 
             <div className="pt-1 border-t border-white/10">
               <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">
-                Ou importer une image / un GIF
+                Or import an image / GIF
               </p>
               <ImageUpload
                 value={form.iconUrl}
@@ -1141,8 +1141,8 @@ export default function LinksManager() {
             {[
               {
                 key: 'icon',
-                title: 'Icône seule',
-                description: 'Sous la bio, en ligne avec les autres icônes, sans titre ni sous-titre.',
+                title: 'Icon only',
+                description: 'Below the bio, inline with the other icons, without title or subtitle.',
                 preview: (
                   <span className="flex items-center gap-2" aria-hidden="true">
                     <span className="w-9 h-9 rounded-xl border border-white/15 bg-white/10 flex items-center justify-center">
@@ -1159,8 +1159,8 @@ export default function LinksManager() {
               },
               {
                 key: 'card',
-                title: 'Carte',
-                description: 'Avec l’icône, le titre et le sous-titre, comme actuellement.',
+                title: 'Card',
+                description: 'With the icon, title and subtitle, as currently displayed.',
                 preview: (
                   <span className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 p-2" aria-hidden="true">
                     <span className="w-8 h-8 rounded-lg border border-white/15 bg-white/10 flex items-center justify-center">
@@ -1201,8 +1201,8 @@ export default function LinksManager() {
       <Drawer
         open={previewOpen && Boolean(profile)}
         onClose={() => setPreviewOpen(false)}
-        title="Aperçu public"
-        description="Valeurs enregistrées"
+        title="Public preview"
+        description="Saved values"
       >
         <PhonePreview profile={profile} links={links} categories={categories} />
       </Drawer>
@@ -1213,9 +1213,9 @@ export default function LinksManager() {
         onCancel={() => setConfirmDelete(null)}
         onConfirm={handleDeleteConfirm}
         busy={deleting}
-        title="Supprimer ce lien ?"
-        message={`« ${confirmDelete ? (confirmDelete.title || confirmDelete.displayName || '@' + confirmDelete.handle || 'Lien') : ''} » sera définitivement supprimé de votre page publique. Cette action est irréversible.`}
-        confirmLabel="Supprimer"
+        title="Delete this link?"
+        message={`"${confirmDelete ? (confirmDelete.title || confirmDelete.displayName || '@' + confirmDelete.handle || 'Link') : ''}" will be permanently removed from your public page. This action cannot be undone.`}
+        confirmLabel="Delete"
       />
 
       {/* Unsaved changes confirmation */}
@@ -1226,10 +1226,10 @@ export default function LinksManager() {
           setDiscardDialog(false);
           resetForm();
         }}
-        title="Abandonner les modifications ?"
-        message="Vous avez des modifications non enregistrées. Elles seront perdues si vous fermez cet éditeur."
-        confirmLabel="Abandonner"
-        cancelLabel="Continuer l’édition"
+        title="Discard changes?"
+        message="You have unsaved changes. They will be lost if you close this editor."
+        confirmLabel="Discard"
+        cancelLabel="Keep editing"
       />
 
       {/* Delete category confirmation */}
@@ -1238,9 +1238,9 @@ export default function LinksManager() {
         onCancel={() => setConfirmDeleteCategory(null)}
         onConfirm={handleDeleteCategoryConfirm}
         busy={categoryBusy}
-        title="Supprimer cette catégorie ?"
-        message={`« ${confirmDeleteCategory ? confirmDeleteCategory.name : ''} » sera supprimée. Les liens qu'elle contient seront conservés et affichés sans catégorie.`}
-        confirmLabel="Supprimer"
+        title="Delete this category?"
+        message={`"${confirmDeleteCategory ? confirmDeleteCategory.name : ''}" will be deleted. The links it contains will be kept and displayed without a category.`}
+        confirmLabel="Delete"
       />
     </div>
   );

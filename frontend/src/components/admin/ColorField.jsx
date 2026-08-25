@@ -7,8 +7,8 @@ const HEX_PARTIAL = /^#[0-9a-fA-F]{0,7}$/;
 const HEX_FULL = /^#[0-9a-fA-F]{6}$/;
 
 /**
- * Sélecteur de couleur avec champ hexadécimal et bouton "Auto"
- * pour revenir à la couleur par défaut du thème (value = null).
+ * Color picker with a hex input and an "Auto" button
+ * to fall back to the theme's default color (value = null).
  */
 export default function ColorField({ id, label, value, onChange, helper, disabled = false }) {
   const autoId = useId();
@@ -29,7 +29,7 @@ export default function ColorField({ id, label, value, onChange, helper, disable
     } else if (HEX_FULL.test(v)) {
       onChange(v);
     } else {
-      // Saisie incomplète : on revient à la dernière valeur valide.
+      // Incomplete input: fall back to the last valid value.
       setDraft(value ?? '');
     }
   };
@@ -60,7 +60,7 @@ export default function ColorField({ id, label, value, onChange, helper, disable
               commitDraft();
             }
           }}
-          placeholder="Défaut du thème"
+          placeholder="Theme default"
           disabled={disabled}
           className={inputCls()}
           spellCheck={false}
@@ -72,7 +72,7 @@ export default function ColorField({ id, label, value, onChange, helper, disable
             setDraft('');
           }}
           disabled={isAuto || disabled}
-          title="Revenir à la couleur du thème"
+          title="Back to theme color"
           className="shrink-0 inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-medium border border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/25 disabled:opacity-40 transition-all duration-150"
         >
           <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />

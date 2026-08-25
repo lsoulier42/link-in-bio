@@ -5,8 +5,8 @@ import Footer from '../components/Footer';
 import { api } from '../lib/api';
 
 const FALLBACK_PROFILES = [
-  { slug: 'louise', name: 'Louise', emoji: '✨' },
-  { slug: 'partenaire', name: 'Mon Partenaire', emoji: '🎵' },
+  { slug: 'alice', name: 'Alice', emoji: '✨' },
+  { slug: 'bob', name: 'Bob', emoji: '🎵' },
 ];
 
 export default function Home() {
@@ -50,9 +50,9 @@ export default function Home() {
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center mb-5 shadow-xl shadow-violet-500/30">
             <Sparkles className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">FayeFiore</h1>
+          <h1 className="text-3xl font-bold text-white tracking-tight">Link in Bio</h1>
           <p className="mt-2 text-sm text-slate-400 text-center">
-            Nos pages de liens personnalisées
+            Your personalized link pages
           </p>
         </div>
 

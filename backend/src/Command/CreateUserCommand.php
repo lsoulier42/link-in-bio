@@ -32,7 +32,7 @@ class CreateUserCommand extends Command
         $this
             ->addArgument('email', InputArgument::REQUIRED, 'User email address')
             ->addArgument('password', InputArgument::REQUIRED, 'User password')
-            ->addArgument('slug', InputArgument::REQUIRED, 'Profile slug (e.g. "louise")')
+            ->addArgument('slug', InputArgument::REQUIRED, 'Profile slug (e.g. "alice")')
             ->addArgument('displayName', InputArgument::REQUIRED, 'Display name')
             ->addOption('bio', null, InputOption::VALUE_OPTIONAL, 'Profile bio', null)
             ->addOption('theme', null, InputOption::VALUE_OPTIONAL, 'Theme name (dark, rose, ocean, sunset, glass)', 'dark')

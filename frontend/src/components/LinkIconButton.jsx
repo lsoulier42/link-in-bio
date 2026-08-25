@@ -16,7 +16,7 @@ export default function LinkIconButton({ link, slug, onTrackClick }) {
       target="_blank"
       rel="noopener noreferrer"
       onClick={handleClick}
-      aria-label={label || 'Lien'}
+      aria-label={label || 'Link'}
       title={label || link.url}
       className="flex items-center justify-center w-11 h-11 rounded-2xl backdrop-blur-md transition-all duration-200 hover:scale-110 hover:-translate-y-0.5"
       style={{

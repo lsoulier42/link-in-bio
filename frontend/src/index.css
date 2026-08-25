@@ -36,8 +36,8 @@
   background: var(--bg-gradient);
 }
 
-/* Fond extérieur du cadre sur desktop, quand le profil n'a pas d'image
-   de fond : neutre sombre avec deux halos d'accent très discrets. */
+/* Desktop backdrop outside the frame, when the profile has no background
+   image: a dark neutral with two very subtle accent glows. */
 .profile-desktop-backdrop {
   background-color: #0b1020;
   background-image:
@@ -104,7 +104,7 @@
   -webkit-backdrop-filter: blur(12px) saturate(130%);
 }
 
-/* Fallback lisible quand backdrop-filter n'est pas supporté */
+/* Readable fallback when backdrop-filter is not supported */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .glass,
   .glass-subtle {

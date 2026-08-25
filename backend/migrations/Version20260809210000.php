@@ -18,9 +18,9 @@ final class Version20260809210000 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE link ADD subtitle VARCHAR(128) DEFAULT NULL, ADD icon_url VARCHAR(512) DEFAULT NULL, ADD display_style VARCHAR(16) DEFAULT \'card\' NOT NULL');
 
-        // Backfill : tous les liens existants s'affichent en "carte".
-        // Les liens réseau reçoivent un sous-titre "@handle" et un titre
-        // correspondant au label de la plateforme (nouvelle sémantique du champ title).
+        // Backfill: all existing links display as "cards".
+        // Network links get a "@handle" subtitle and a title matching the
+        // platform label (new semantics of the title field).
         $this->addSql("UPDATE link SET display_style = 'card'");
         $this->addSql("UPDATE link SET subtitle = CONCAT('@', handle) WHERE network_type IS NOT NULL AND handle IS NOT NULL");
         $this->addSql(<<<'SQL'

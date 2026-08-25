@@ -9,8 +9,8 @@ export default function ConfirmDialog({
   onConfirm,
   title,
   message,
-  confirmLabel = 'Confirmer',
-  cancelLabel = 'Annuler',
+  confirmLabel = 'Confirm',
+  cancelLabel = 'Cancel',
   busy = false,
 }) {
   const confirmRef = useRef(null);
@@ -47,7 +47,7 @@ export default function ConfirmDialog({
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <button
         type="button"
-        aria-label="Fermer"
+        aria-label="Close"
         onClick={onCancel}
         disabled={busy}
         className="absolute inset-0 bg-black/55 backdrop-blur-sm cursor-default anim-fade-in"

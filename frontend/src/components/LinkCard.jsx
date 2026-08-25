@@ -3,7 +3,7 @@ import { resolveIcon } from '../icons';
 
 export default function LinkCard({ link, slug, onTrackClick }) {
   const Icon = resolveIcon(link.iconName);
-  const main = link.title || link.displayName || (link.handle ? `@${link.handle}` : '') || 'Lien';
+  const main = link.title || link.displayName || (link.handle ? `@${link.handle}` : '') || 'Link';
   const sub = link.subtitle || (link.displayName && link.handle ? `@${link.handle}` : null);
 
   const handleClick = () => {

@@ -44,7 +44,7 @@ export default function Drawer({ open, onClose, title, description, children, fo
     <div className="fixed inset-0 z-50">
       <button
         type="button"
-        aria-label="Fermer"
+        aria-label="Close"
         onClick={onClose}
         className="absolute inset-0 bg-black/55 backdrop-blur-sm cursor-default anim-fade-in"
         tabIndex={-1}
@@ -67,7 +67,7 @@ export default function Drawer({ open, onClose, title, description, children, fo
           <button
             type="button"
             onClick={onClose}
-            aria-label="Fermer"
+            aria-label="Close"
             className="shrink-0 p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
           >
             <X className="w-5 h-5" aria-hidden="true" />

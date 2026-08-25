@@ -4,8 +4,8 @@ namespace App\Service;
 
 final class SocialNetworkService
 {
-    // Les clés doivent rester synchronisées avec le registre d'icônes côté frontend
-    // (frontend/src/icons/index.js) ainsi qu'avec le registre alloué par l'admin
+    // The keys must stay in sync with the frontend icon registry
+    // (frontend/src/icons/index.js) and with the admin-side registry
     // (AdminLinkController::ALLOWED_ICON_NAMES).
     public const NETWORKS = [
         'x'         => ['label' => 'X (Twitter)',  'iconName' => 'x',         'urlTemplate' => 'https://x.com/%s'],
